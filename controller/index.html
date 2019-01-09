@@ -46,14 +46,14 @@
 	  function checkPosition(){
       Timer=1000;
 	  	console.log(window.pageYOffset);
-	  	firebase.database().ref("scrollKosovo").update({scroll: window.pageYOffset})
+	  	firebase.database().ref("scrollPotato").update({scroll: window.pageYOffset})
 	  }
 
     setInterval(function(){
       if(Timer>0)
         Timer-=500;
     },500)
-	  firebase.database().ref("scrollKosovo").on("value",function(snap){
+	  firebase.database().ref("scrollPotato").on("value",function(snap){
       if(Timer<=0){
 	  	  var position = snap.val()["scroll"];
 	  		console.log(position);
