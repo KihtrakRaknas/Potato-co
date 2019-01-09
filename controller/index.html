@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Remote Scroller!</title>
+    <style>
+    body{
+    	  background: #466368;
+		  background: -webkit-linear-gradient(#000000, #FFFFFF);
+		  background:    -moz-linear-gradient(#000000, #FFFFFF);
+  			background:         linear-gradient(#000000, #FFFFFF);
+    }
+    </style>
+  </head>
+  <body style="height:2000vh">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+	<script>
+	  // Initialize Firebase
+	  var config = {
+	    apiKey: "AIzaSyAjgdd8Bc-yxC4Ors8t76ZYXsavQABh5I4",
+	    authDomain: "rick-roller.firebaseapp.com",
+	    databaseURL: "https://rick-roller.firebaseio.com",
+	    projectId: "rick-roller",
+	    storageBucket: "rick-roller.appspot.com",
+	    messagingSenderId: "288023573199"
+	  };
+	  firebase.initializeApp(config);
+	  	  //var position = $($(this).attr("href")).offset().top;
+
+    var Timer=0;
+
+	  window.addEventListener('scroll', checkPosition);
+	  function checkPosition(){
+      Timer=1000;
+	  	console.log(window.pageYOffset);
+	  	firebase.database().ref("scrollKosovo").update({scroll: window.pageYOffset})
+	  }
+
+    setInterval(function(){
+      if(Timer>0)
+        Timer-=500;
+    },500)
+	  firebase.database().ref("scrollKosovo").on("value",function(snap){
+      if(Timer<=0){
+	  	  var position = snap.val()["scroll"];
+	  		console.log(position);
+	  	    window.scrollTo(0, position);;
+      }
+	  });
+
+    for(var i= 0; i!=400;i++){
+      var div = document.createElement("DIV");
+      div.style.height="5vh";
+      div.style.width="100%";
+      if(i%2==1){
+        div.style.backgroundColor= "lightblue";
+        var div2 = document.createElement("DIV");
+        div2.style.height="100%";
+        div2.style.backgroundColor= "blue";
+        div2.style.width=i*5%100+"%";
+        div.appendChild(div2);
+      }
+      document.body.appendChild(div);
+    }
+	</script>
+  </body>
+</html>
